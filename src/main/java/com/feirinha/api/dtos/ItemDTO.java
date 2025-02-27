@@ -7,9 +7,9 @@ import lombok.Data;
 
 @Data
 public class ItemDTO {
-  @NotBlank
+  @NotBlank(message = "Name is required")
   private String name;
-  @NotNull
-  @PositiveOrZero
+  @NotNull(message = "Quantity is required")
+  @PositiveOrZero(message = "Quantity must be greater than or equal to 0")
   private int quantity;
 }
