@@ -9,12 +9,17 @@ import com.feirinha.api.services.ItemService;
 
 import jakarta.validation.Valid;
 
+import java.lang.foreign.Linker.Option;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/items")
@@ -36,6 +41,20 @@ public class ItemController {
     return ResponseEntity.status(HttpStatus.CREATED).body(item.get());
   }
       
+  @GetMapping()
+  public ResponseEntity<Object> getItems() {
+      return ResponseEntity.status(HttpStatus.OK).body(itemService.getItems());
+  }
+  
+  @GetMapping("/{id}")
+  public ResponseEntity<Object> getItemById(@PathVariable("id") Long id) {
+      Optional<ItemModel> item = itemService.getItemById(id);
+      
+      if (!item.isPresent()) {
+          return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item not found!");
+      }
+      return ResponseEntity.status(HttpStatus.OK).body(item.get());
+  }
   
 
 }
